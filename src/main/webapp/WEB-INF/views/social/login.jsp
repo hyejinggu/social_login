@@ -4,12 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>소셜 로그인</title>
+<title>Insert title here</title>
 </head>
 <body>
-	<div>
-		<h1>Hello World!</h1>
-		<a href="login">로그인하기</a>
-	</div>
+
 </body>
 </html>
