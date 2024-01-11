@@ -9,7 +9,7 @@
 <body>
 	<div>
 		<h1>Hello World!</h1>
-		<a href="login">로그인하기</a>
+		<a href="social/loginpage">로그인하기</a>
 	</div>
 </body>
 </html>
