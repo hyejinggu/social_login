@@ -1,5 +1,7 @@
 package com.hj.pjt.controller;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,7 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 public class LoginController {
 	
-	private KakaoAPI kakao;
+	private final KakaoAPI kakao;
 	
 	@GetMapping("/loginpage")
 	public void getLoginPage() {
@@ -25,8 +27,11 @@ public class LoginController {
 	@GetMapping("/login")
 	public String login(@RequestParam("code") String code) {
 		System.out.println(code);
-		String access_Token = kakao.getAccessToken(code);
-        System.out.println("controller access_token : " + access_Token);
+		String access_token = kakao.getAccessToken(code);
+        System.out.println("controller access_token : " + access_token);
+        
+        Map<String, Object> userInfo = kakao.getUserInfo(access_token);
+        System.out.println(userInfo.get("username"));
         
 	    return "home";
 	}
