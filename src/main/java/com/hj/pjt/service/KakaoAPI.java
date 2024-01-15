@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
@@ -23,6 +24,7 @@ import lombok.extern.log4j.Log4j2;
 @Service
 public class KakaoAPI {
 
+	@Autowired
 	UserRepository repository;
 
 	// getToken
@@ -84,14 +86,18 @@ public class KakaoAPI {
 	}
 
 	// getUserInfo
-	public HashMap<String, Object> getUserInfo(String accessToken) {
+	public HashMap<String, Object> getUserInfo(String access_token) {
+		// 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap 타입으로 선
 	    HashMap<String, Object> userInfo = new HashMap<>();
+	    
 	    String reqUrl = "https://kapi.kakao.com/v2/user/me";
 	    try{
 	        URL url = new URL(reqUrl);
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	        conn.setRequestMethod("GET");
-	        conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+	        
+	        // 요청에 필요한 Header에 포함될 내용  
+	        conn.setRequestProperty("Authorization", "Bearer " + access_token);
 	        //conn.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
 	        int responseCode = conn.getResponseCode();
@@ -115,18 +121,28 @@ public class KakaoAPI {
 	        JsonParser parser = new JsonParser();
 	        JsonElement element = parser.parse(result);
 
-	        //JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+	        JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
 	        JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
-	        String useremail = kakao_account.getAsJsonObject().get("account_email").getAsString();
-	        String username = kakao_account.getAsJsonObject().get("name").getAsString();
-	        String userbirthday = kakao_account.getAsJsonObject().get("birthday").getAsString();
-	        String userphone = kakao_account.getAsJsonObject().get("phone_number").getAsString();
+	        
+	        String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+            String profile_image = properties.getAsJsonObject().get("profile_image").getAsString();
+            String email = kakao_account.getAsJsonObject().get("email").getAsString();
 
-	        userInfo.put("useremail", useremail);
-	        userInfo.put("username", username);
-	        userInfo.put("userphone", userphone);
-	        userInfo.put("userbirthday", userbirthday);
+            userInfo.put("nickname", nickname);
+            userInfo.put("email", email);
+            userInfo.put("profile_image", profile_image);
+
+	        
+            User user = new User();
+            user.setUseremail(email);
+            user.setUsername(nickname);
+            user.setOauthtype("kakao");
+            user.setOauthtoken("00000");
+            user.setUserphone("01033356803");
+            user.setUserbirthday("19960627");
+            System.out.println("user!!!!!!!" + user);
+            repository.save(user);
 
 	        br.close();
 

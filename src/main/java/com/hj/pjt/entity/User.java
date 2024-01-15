@@ -25,5 +25,5 @@ public class User {
 	   private String userphone;
 	   private String oauthtype;
 	   private String oauthtoken;
-	   private String useremaiil;
+	   private String useremail;
 }

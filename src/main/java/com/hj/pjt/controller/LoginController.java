@@ -31,8 +31,10 @@ public class LoginController {
         System.out.println("controller access_token : " + access_token);
         
         Map<String, Object> userInfo = kakao.getUserInfo(access_token);
-        System.out.println(userInfo.get("username"));
-        
+        //System.out.println(userInfo.get("username"));
+        //System.out.println(userInfo.get("useremail"));
+        //System.out.println(userInfo.get("userphone"));
+        System.out.println("nickname : " + userInfo.get("nickname"));
 	    return "home";
 	}
 
