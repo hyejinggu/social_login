@@ -18,14 +18,15 @@ import com.google.gson.JsonParser;
 import com.hj.pjt.entity.User;
 import com.hj.pjt.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class KakaoAPI {
 
-	@Autowired
-	UserRepository repository;
+	private final UserRepository repository;
 
 	// getToken
 	public String getAccessToken(String authorize_code) {
