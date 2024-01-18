@@ -1,10 +1,14 @@
 package com.hj.pjt.entity;
 
+import java.io.Serializable;
+
+import com.hj.pjt.domain.OauthId;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,16 +18,17 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@IdClass(OauthId.class)
+public class User implements Serializable {
 	
-	   @Id
-	   @GeneratedValue(strategy = GenerationType.IDENTITY)
-	   private int userid;
+	@Transient
+	private static final long serialVersionUID = 1L;
 
-	   private String username;
-	   private String userbirthday;
-	   private String userphone;
-	   private String oauthtype;
-	   private String oauthtoken;
-	   private String useremail;
+	@Id
+	private String oauthtype;
+	@Id
+	private String oauthtoken;
+	
+	private String username;
+	private String useremail;
 }

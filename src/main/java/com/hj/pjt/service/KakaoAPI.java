@@ -8,13 +8,14 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.hj.pjt.domain.OauthId;
 import com.hj.pjt.entity.User;
 import com.hj.pjt.repository.UserRepository;
 
@@ -87,71 +88,66 @@ public class KakaoAPI {
 	}
 
 	// getUserInfo
-	public HashMap<String, Object> getUserInfo(String access_token) {
-		// 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap 타입으로 선
-	    HashMap<String, Object> userInfo = new HashMap<>();
-	    
-	    String reqUrl = "https://kapi.kakao.com/v2/user/me";
-	    try{
-	        URL url = new URL(reqUrl);
-	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-	        conn.setRequestMethod("GET");
-	        
-	        // 요청에 필요한 Header에 포함될 내용  
-	        conn.setRequestProperty("Authorization", "Bearer " + access_token);
-	        //conn.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+	public String getUserInfo(String access_token) {
 
-	        int responseCode = conn.getResponseCode();
-	        log.info("[KakaoApi.getUserInfo] responseCode : {}",  responseCode);
+		String reqUrl = "https://kapi.kakao.com/v2/user/me";
+		try {
+			URL url = new URL(reqUrl);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
 
-	        BufferedReader br;
-	        if (responseCode >= 200 && responseCode <= 300) {
-	            br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-	        } else {
-	            br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-	        }
+			// 요청에 필요한 Header에 포함될 내용
+			conn.setRequestProperty("Authorization", "Bearer " + access_token);
 
-	        String line = "";
-	        StringBuilder responseSb = new StringBuilder();
-	        while((line = br.readLine()) != null){
-	            responseSb.append(line);
-	        }
-	        String result = responseSb.toString();
-	        log.info("responseBody = {}", result);
+			int responseCode = conn.getResponseCode();
+			log.info("[KakaoApi.getUserInfo] responseCode : {}", responseCode);
 
-	        JsonParser parser = new JsonParser();
-	        JsonElement element = parser.parse(result);
+			BufferedReader br;
+			if (responseCode >= 200 && responseCode <= 300) {
+				br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			} else {
+				br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+			}
 
-	        JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
-	        JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+			String line = "";
+			StringBuilder responseSb = new StringBuilder();
+			while ((line = br.readLine()) != null) {
+				responseSb.append(line);
+			}
+			String result = responseSb.toString();
+			log.info(responseSb);
+			log.info("responseBody = {}", result);
 
-	        
-	        String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-            String profile_image = properties.getAsJsonObject().get("profile_image").getAsString();
-            String email = kakao_account.getAsJsonObject().get("email").getAsString();
+			JsonParser parser = new JsonParser();
+			JsonElement element = parser.parse(result);
 
-            userInfo.put("nickname", nickname);
-            userInfo.put("email", email);
-            userInfo.put("profile_image", profile_image);
+			JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+			JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+			String token_id = element.getAsJsonObject().get("id").getAsString();
 
-	        
-            User user = new User();
-            user.setUseremail(email);
-            user.setUsername(nickname);
-            user.setOauthtype("kakao");
-            user.setOauthtoken("00000");
-            user.setUserphone("01033356803");
-            user.setUserbirthday("19960627");
-            System.out.println("user!!!!!!!" + user);
-            repository.save(user);
+			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+			String email = kakao_account.getAsJsonObject().get("email").getAsString();
 
-	        br.close();
+			Optional<User> opt_user = repository.findById(new OauthId("kakao", token_id));
 
-	    }catch (Exception e){
-	        e.printStackTrace();
-	    }
-	    return userInfo;
+			if (!opt_user.isPresent()) {
+				User user = new User();
+				user.setUseremail(email);
+				user.setUsername(nickname);
+				user.setOauthtype("kakao");
+				user.setOauthtoken(token_id);
+				repository.save(user);
+			}
+			
+
+			br.close();
+			return "success";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
+
 	}
-	    
-	
+
 }
