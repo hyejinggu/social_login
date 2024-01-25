@@ -38,8 +38,8 @@ public class LoginService {
     	  if("naver".equals(gate)) {
     		  redirectURI = URLEncoder.encode("http://localhost:8080/social/nlogin", "UTF-8");
     		  apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code";
-    		  apiURL += "&client_id=" + "hospjNuWBFaE1sQr_t7B";
-    		  apiURL += "&client_secret=" + "PfT6rr4e0C";
+    		  apiURL += "&client_id=" + "vgBxKVvgkklDf2B4NKno";
+    		  apiURL += "&client_secret=" + "k6QPwf4bSa";
     		  apiURL += "&redirect_uri=" + "http://localhost:8080/social/nlogin";
     		  apiURL += "&code=" + code;
     		  apiURL += "&state=" + 1234;
@@ -47,9 +47,9 @@ public class LoginService {
     	  } else if("kakao".equals(gate)){
     		  redirectURI = URLEncoder.encode("http://localhost:8080/social/klogin", "UTF-8");
     		  apiURL = "https://kauth.kakao.com/oauth/token?grant_type=authorization_code";
-    		  apiURL += "&client_id=515f074d94d08d53795260fee493bc31";
+    		  apiURL += "&client_id=b471328753238fc180284b373832262a";
     		  apiURL += "&redirect_uri=http://localhost:8080/social/klogin";
-    		  apiURL += "&client_secret=RVDWbm6lKZKGvIWciR483xICAK498B4d";
+    		  apiURL += "&client_secret=MP2DGb1FU2Xa3QcDKodnB1zTzEQLzGn5";
     		  apiURL += "&code=" + code;
     		  
     	  }
