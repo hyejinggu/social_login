@@ -5,16 +5,16 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.1</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.7.2</version>
+		<relativePath/> 
 	</parent>
-	<groupId>com.hj</groupId>
-	<artifactId>hyejin_project1</artifactId>
+	<groupId>com.se</groupId>
+	<artifactId>social</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>hyejin_project1</name>
-	<description>social login project for Spring Boot</description>
+	<name>social</name>
+	<description>Social project for Spring Boot</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
       <dependency>
@@ -64,21 +64,20 @@
          <groupId>org.apache.tomcat.embed</groupId>
          <artifactId>tomcat-embed-jasper</artifactId>
       </dependency>
-      
       <dependency>
          <groupId>javax.servlet</groupId>
          <artifactId>jstl</artifactId>
          <version>1.2</version>
       </dependency>
 
-      <!-- ** Spring Boot Security -->
+     <!--  ** Spring Boot Security  -->
       <dependency>
          <groupId>org.springframework.boot</groupId>
          <artifactId>spring-boot-starter-security</artifactId>
       </dependency>
 
-      <!-- REST API ~~~~~~~~~ https://mvnrepository.com/artifact/com.google.code.gson/gson 
-         -> gson : Java객체 -> JSON Type & JSON Type -> Java객체 -->
+	<!-- REST API ~~~~~~~~~ https://mvnrepository.com/artifact/com.google.code.gson/gson 
+         -> gson : Java객체 -> JSON Type & JSON Type -> Java객체  -->
       <dependency>
          <groupId>com.google.code.gson</groupId>
          <artifactId>gson</artifactId>
@@ -91,11 +90,8 @@
          <artifactId>spring-boot-starter-mail</artifactId>
       </dependency>
 
-      <!-- =================================================================================== -->
-
 
    </dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
