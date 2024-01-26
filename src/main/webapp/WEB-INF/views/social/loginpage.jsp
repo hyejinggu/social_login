@@ -19,7 +19,7 @@
 
 	<hr>
 
-	<a href="https://accounts.google.com/o/oauth2/auth?client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&response_type=code&scope=https://www.googleapis.com/auth/userinfo.emailhttps://www.googleapis.com/auth/userinfo.profile">
+	<a href="https://accounts.google.com/o/oauth2/auth?client_id=654226141377-no0fv2itsjltorg3l19te3aiqv4ilqeu.apps.googleusercontent.com&redirect_uri=http://localhost:8080/social/glogin&response_type=code&scope=email%20profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20openid&authuser=0&prompt=consent">
 		<img src="/resources/images/google_login.png">
 	</a>
 </body>

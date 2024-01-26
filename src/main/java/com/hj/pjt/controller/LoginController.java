@@ -82,9 +82,10 @@ public class LoginController {
 
 	@GetMapping("/glogin")
 	public String glogin(@RequestParam("code") String code, Model model, HttpSession session) {
-		System.out.println(code);
+		System.out.println("code!!!!!: " + code);
 
 		String access_token = loginService.getAccessToken(code, "google");
+		System.out.println("*****************access_token: " + access_token);
 
 		try {
 			User userInfo = loginService.getUserInfo(access_token, "google");
@@ -98,7 +99,6 @@ public class LoginController {
 			}
 
 		} catch (Exception e) {
-
 			return "redirect:/social/loginPage";
 		}
 

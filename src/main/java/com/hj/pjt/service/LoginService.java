@@ -3,6 +3,7 @@ package com.hj.pjt.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -11,7 +12,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hj.pjt.domain.OauthId;
 import com.hj.pjt.entity.User;
@@ -52,6 +52,13 @@ public class LoginService {
     		  apiURL += "&client_secret=MP2DGb1FU2Xa3QcDKodnB1zTzEQLzGn5";
     		  apiURL += "&code=" + code;
     		  
+    	  } else {
+    		  redirectURI = URLEncoder.encode("http://localhost:8080/social/glogin", "UTF-8");
+    		  apiURL = "https://oauth2.googleapis.com/token?grant_type=authorization_code";
+    		  apiURL += "&client_id=654226141377-no0fv2itsjltorg3l19te3aiqv4ilqeu.apps.googleusercontent.com";
+    		  apiURL += "&redirect_uri=http://localhost:8080/social/glogin";
+    		  apiURL += "&client_secret=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";
+    		  apiURL += "&code=" + code;
     	  }
     	  
          System.out.println("apiURL=" + apiURL);
@@ -59,7 +66,15 @@ public class LoginService {
          
          URL url = new URL(apiURL);
          HttpURLConnection con = (HttpURLConnection) url.openConnection();
+         
          con.setRequestMethod("POST");
+         con.setRequestProperty("Content-Length", "1");
+         con.setDoOutput(true);
+         OutputStream outputStream = con.getOutputStream();
+         outputStream.write(" ".getBytes());
+         outputStream.flush();
+         outputStream.close();
+         
          int responseCode = con.getResponseCode();
          BufferedReader br;
          System.out.print("responseCode=" + responseCode);
