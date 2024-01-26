@@ -124,6 +124,8 @@ public class LoginService {
 		   apiURL = "https://openapi.naver.com/v1/nid/me";
 	   } else if("kakao".equals(gate)) {
 		   apiURL = "https://kapi.kakao.com/v2/user/me";
+	   } else if("google".equals(gate)) {
+		   apiURL = "https://www.googleapis.com/oauth2/v3/userinfo";
 	   }
 	   
 	      String headerStr = "Bearer " + accessToken; // Bearer 다음에 공백 추가
@@ -149,7 +151,12 @@ public class LoginService {
 	    	  nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
 	    	  email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
 	    	  token_id = element.getAsJsonObject().get("id").getAsString();
-	      }
+	      } else if ("google".equals(gate)) {
+	    	  nickname = element.getAsJsonObject().get("name").getAsString();
+	    	  email = element.getAsJsonObject().get("email").getAsString();
+	    	  token_id = element.getAsJsonObject().get("sub").getAsString();
+	        }
+
 	      
 	      Optional<User> opt_user = repository.findById(new OauthId(gate, token_id));
 	      System.out.println("--------opt_user : " + opt_user);
